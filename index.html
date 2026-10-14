@@ -309,6 +309,88 @@
       .order-wrapper { padding: 28px 20px; }
     }
 
+    /* ===== ART GALLERY ===== */
+    #gallery { background: #fff9f5; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background: #f5d5e8;
+      box-shadow: 0 4px 20px rgba(181,72,122,0.1);
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .gallery-item:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(181,72,122,0.22); }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .4s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(58,26,46,0.75) 0%, transparent 55%);
+      opacity: 0; transition: opacity .3s;
+      display: flex; align-items: flex-end;
+      padding: 18px;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-caption {
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .gallery-caption span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 400;
+      opacity: .85;
+      margin-top: 2px;
+    }
+    /* placeholder card when no image */
+    .gallery-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; color: #b5487a;
+    }
+    .gallery-placeholder .ph-icon { font-size: 2.8rem; }
+    .gallery-placeholder p { font-size: 0.78rem; font-weight: 500; opacity: .7; text-align: center; padding: 0 12px; }
+
+    /* Lightbox */
+    #lightbox {
+      display: none; position: fixed; inset: 0; z-index: 1500;
+      background: rgba(30,10,22,0.92);
+      align-items: center; justify-content: center;
+    }
+    #lightbox.active { display: flex; }
+    #lightbox img {
+      max-width: 90vw; max-height: 88vh;
+      border-radius: 12px;
+      box-shadow: 0 8px 60px rgba(0,0,0,0.6);
+    }
+    #lightbox-close {
+      position: absolute; top: 20px; right: 28px;
+      font-size: 2.2rem; color: #fff; cursor: pointer;
+      line-height: 1; transition: color .2s;
+    }
+    #lightbox-close:hover { color: #f0a0c0; }
+    #lightbox-caption {
+      position: absolute; bottom: 24px;
+      font-size: 0.95rem; color: #f0d8e8; text-align: center;
+      width: 100%; padding: 0 20px;
+    }
+
     /* ===== SCROLL ANIMATION ===== */
     .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
@@ -321,6 +403,7 @@
     <a href="#hero" class="nav-logo">✿ Snehal Creations</a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
+      <li><a href="#gallery">Gallery</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#instagram">Instagram</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -384,6 +467,65 @@
         <h3>DM for Custom Orders</h3>
         <p>Got something specific in mind? Reach out and we'll bring your vision to life.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <span id="lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="lightbox-img" src="" alt="" />
+    <div id="lightbox-caption"></div>
+  </div>
+
+  <!-- ===== ART GALLERY ===== -->
+  <section id="gallery">
+    <div class="section-header fade-up">
+      <h2>My Art Gallery</h2>
+      <div class="divider"></div>
+      <p>A glimpse of the handmade magic — each piece crafted with love from Pune.</p>
+    </div>
+    <div class="gallery-grid">
+
+      <!-- SLOT 1 — Replace src with your image path e.g. src="images/embroidery1.jpg" -->
+      <div class="gallery-item fade-up" onclick="openLightbox(this)">
+        <img src="https://placehold.co/500x500/fce4f3/b5487a?text=Embroidery+Art" alt="Embroidery Art" data-caption="Embroidery Art" data-sub="Hand-stitched with love" />
+        <div class="gallery-overlay"><div class="gallery-caption">Embroidery Art<span>Hand-stitched with love</span></div></div>
+      </div>
+
+      <!-- SLOT 2 -->
+      <div class="gallery-item fade-up" onclick="openLightbox(this)">
+        <img src="https://placehold.co/500x500/fdebd0/c06030?text=Resin+Art" alt="Resin Art" data-caption="Resin Art" data-sub="Coasters & trays" />
+        <div class="gallery-overlay"><div class="gallery-caption">Resin Art<span>Coasters & trays</span></div></div>
+      </div>
+
+      <!-- SLOT 3 -->
+      <div class="gallery-item fade-up" onclick="openLightbox(this)">
+        <img src="https://placehold.co/500x500/f8d7e8/8f3060?text=Canvas+Painting" alt="Canvas Painting" data-caption="Canvas Painting" data-sub="Acrylic on canvas" />
+        <div class="gallery-overlay"><div class="gallery-caption">Canvas Painting<span>Acrylic on canvas</span></div></div>
+      </div>
+
+      <!-- SLOT 4 -->
+      <div class="gallery-item fade-up" onclick="openLightbox(this)">
+        <img src="https://placehold.co/500x500/fce4f3/b5487a?text=Hand-Painted+Bag" alt="Hand-Painted Bag" data-caption="Hand-Painted Bag" data-sub="Wearable art" />
+        <div class="gallery-overlay"><div class="gallery-caption">Hand-Painted Bag<span>Wearable art</span></div></div>
+      </div>
+
+      <!-- SLOT 5 -->
+      <div class="gallery-item fade-up" onclick="openLightbox(this)">
+        <img src="https://placehold.co/500x500/fdebd0/c06030?text=Custom+Gift" alt="Custom Gift" data-caption="Custom Gift" data-sub="Personalised just for you" />
+        <div class="gallery-overlay"><div class="gallery-caption">Custom Gift<span>Personalised just for you</span></div></div>
+      </div>
+
+      <!-- SLOT 6 -->
+      <div class="gallery-item fade-up" onclick="openLightbox(this)">
+        <img src="https://placehold.co/500x500/f8d7e8/8f3060?text=Resin+Jewellery" alt="Resin Jewellery" data-caption="Resin Jewellery" data-sub="Handcrafted pieces" />
+        <div class="gallery-overlay"><div class="gallery-caption">Resin Jewellery<span>Handcrafted pieces</span></div></div>
+      </div>
+
+    </div>
+    <!-- Add more .gallery-item blocks above to display more artwork -->
+    <div style="text-align:center; margin-top: 32px;">
+      <a href="https://www.instagram.com/snehal_creations_1/" target="_blank" rel="noopener" class="btn-secondary">📷 See More on Instagram</a>
     </div>
   </section>
 
@@ -574,6 +716,7 @@
     <div class="logo">✿ Snehal Creations</div>
     <ul class="footer-links">
       <li><a href="#services">Services</a></li>
+      <li><a href="#gallery">Gallery</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#instagram">Instagram</a></li>
       <li><a href="#order">Order</a></li>
@@ -585,6 +728,22 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script>
+    // --- Lightbox ---
+    function openLightbox(item) {
+      const img = item.querySelector('img');
+      document.getElementById('lightbox-img').src = img.src;
+      document.getElementById('lightbox-img').alt = img.alt;
+      document.getElementById('lightbox-caption').textContent =
+        (img.dataset.caption || '') + (img.dataset.sub ? ' — ' + img.dataset.sub : '');
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
     // --- Fade-up on scroll ---
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -596,23 +755,41 @@
       item.classList.toggle('open');
     }
 
-    // --- WhatsApp Order Handler ---
-    function submitOrder(e) {
+    // --- WhatsApp + Formspree Order Handler ---
+    async function submitOrder(e) {
       e.preventDefault();
 
-      // REPLACE WITH YOUR ACTUAL WHATSAPP NUMBER (with country code, no +, no spaces)
-      const myWhatsAppNumber = "919403936337"; 
+      // ── YOUR DETAILS ────────────────────────────────────────────
+      const myWhatsAppNumber = "919403936337";
+      // STEP: Sign up free at https://formspree.io → create form → paste your form ID below
+      const FORMSPREE_ID = "YOUR_FORMSPREE_ID"; // e.g. "xpwzabcd"
+      // ────────────────────────────────────────────────────────────
 
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const email = document.getElementById('email').value.trim() || 'Not provided';
-      const product = document.getElementById('product').value;
+      const name     = document.getElementById('name').value.trim();
+      const phone    = document.getElementById('phone').value.trim();
+      const email    = document.getElementById('email').value.trim() || 'Not provided';
+      const product  = document.getElementById('product').value;
       const occasion = document.getElementById('occasion').value || 'None specified';
-      const details = document.getElementById('details').value.trim();
+      const details  = document.getElementById('details').value.trim();
       const delivery = document.getElementById('delivery').value || 'Flexible / As soon as possible';
 
-      // Format WhatsApp notification text
-      const orderMessage = 
+      const btn = document.querySelector('.submit-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Sending...';
+
+      // 1️⃣  Send to Formspree (email notification to you)
+      if (FORMSPREE_ID !== "YOUR_FORMSPREE_ID") {
+        try {
+          await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ name, phone, email, product, occasion, details, delivery })
+          });
+        } catch (_) { /* silent — WhatsApp still works */ }
+      }
+
+      // 2️⃣  Build WhatsApp message
+      const orderMessage =
 `🌸 *NEW CUSTOM ORDER REQUEST* 🌸
 ----------------------------------
 👤 *Customer Name:* ${name}
@@ -627,16 +804,13 @@ ${details}
 ----------------------------------
 _Submitted via Snehal Creations Website_`;
 
-      const encodedMsg = encodeURIComponent(orderMessage);
-      const whatsappUrl = `https://wa.me/${myWhatsAppNumber}?text=${encodedMsg}`;
+      const whatsappUrl = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(orderMessage)}`;
 
-      // Show user feedback
+      // 3️⃣  Show success & redirect
       const form = document.getElementById('orderForm');
-      const msg = document.getElementById('success-msg');
+      const msg  = document.getElementById('success-msg');
       form.style.display = 'none';
-      msg.style.display = 'block';
-
-      // Redirect directly to WhatsApp
+      msg.style.display  = 'block';
       window.open(whatsappUrl, '_blank');
     }
   </script>
