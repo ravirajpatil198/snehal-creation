@@ -771,25 +771,12 @@
       item.classList.toggle('open');
     }
 
-    // --- Order Handler: Telegram Bot (automatic notification) ---
+    // --- Order Handler: Telegram Bot ---
     async function submitOrder(e) {
       e.preventDefault();
 
-      // ══════════════════════════════════════════════════════════
-      // SETUP — Do this ONCE (5 minutes):
-      //
-      // STEP 1: Open Telegram → search @BotFather → send /newbot
-      //         Give your bot a name e.g. "SnehalOrdersBot"
-      //         Copy the TOKEN it gives you → paste below
-      //
-      // STEP 2: Open Telegram → search @userinfobot → press Start
-      //         Copy your Chat ID number → paste below
-      //
-
-      const TELEGRAM_TOKEN   = "8759471549:AAEyVyvbsOEzAnO-L4lek36r-BL_XElfjwU";
-      const TELEGRAM_CHAT_ID = "7089348292";
-      //
-      // ══════════════════════════════════════════════════════════
+      // YOUR BOT TOKEN from @BotFather
+      const TELEGRAM_TOKEN = "8759471549:AAEyVyvbsOEzAnO-L4lek36r-BL_XElfjwU";
 
       const name     = document.getElementById('name').value.trim();
       const phone    = document.getElementById('phone').value.trim();
@@ -799,86 +786,78 @@
       const details  = document.getElementById('details').value.trim();
       const delivery = document.getElementById('delivery').value || 'Flexible';
 
-      // Build WhatsApp fallback link
-      const waMsg = encodeURIComponent(`🌸 NEW ORDER - ${name}\nProduct: ${product}\nPhone: ${phone}\nDetails: ${details}`);
-      const waUrl = `https://wa.me/919403936337?text=${waMsg}`;
-      document.getElementById('waFallback').href = waUrl;
-      document.getElementById('waError').href    = waUrl;
-
-      // Disable button
       const btn = document.getElementById('submitBtn');
       btn.disabled    = true;
       btn.textContent = '⏳ Sending your order...';
 
-      // Build Telegram message
-      const message =
-`🌸 *NEW ORDER — Snehal Creations* 🌸
-━━━━━━━━━━━━━━━━━━━━━
-👤 *Name:*     ${name}
-📞 *Phone:*    ${phone}
-✉️ *Email:*    ${email}
-🎨 *Product:*  ${product}
-🎉 *Occasion:* ${occasion}
-📅 *Need By:*  ${delivery}
-━━━━━━━━━━━━━━━━━━━━━
-📝 *Details:*
-${details}
-━━━━━━━━━━━━━━━━━━━━━
-_via Snehal Creations Website_`;
+      const waMsg = encodeURIComponent(`NEW ORDER\nName: ${name}\nProduct: ${product}\nPhone: ${phone}\nDetails: ${details}`);
+      const waUrl = `https://wa.me/919403936337?text=${waMsg}`;
+      document.getElementById('waFallback').href = waUrl;
+      document.getElementById('waError').href    = waUrl;
 
-      // Check tokens are set
-      if (TELEGRAM_TOKEN === "YOUR_BOT_TOKEN" || TELEGRAM_CHAT_ID === "YOUR_CHAT_ID") {
-        showSuccess();
-        return;
-      }
+      const message =
+`🌸 NEW ORDER - Snehal Creations 🌸
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+Product: ${product}
+Occasion: ${occasion}
+Need By: ${delivery}
+Details: ${details}
+--- via Snehal Creations Website ---`;
 
       try {
-        // Send directly to Telegram Bot API
-        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id    : TELEGRAM_CHAT_ID,
-            text       : message,
-            parse_mode : 'Markdown'
-          })
-        });
+        // Auto-fetch the correct chat ID from bot updates
+        const updRes  = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/getUpdates`);
+        const updData = await updRes.json();
 
-        const data = await res.json();
-        if (data.ok) {
+        if (!updData.ok) {
+          showErrMsg('Invalid Bot Token. Get a new one from @BotFather on Telegram.', waUrl);
+          return;
+        }
+
+        if (!updData.result || updData.result.length === 0) {
+          showErrMsg(
+            '<b>One step needed:</b><br>' +
+            '1. Open Telegram<br>' +
+            '2. Search your bot (the one you created with @BotFather)<br>' +
+            '3. Tap <b>START</b><br>' +
+            '4. Come back and submit your order again.',
+            waUrl
+          );
+          return;
+        }
+
+        // Get chat ID from the most recent update
+        const lastUpdate = updData.result[updData.result.length - 1];
+        const chatId = lastUpdate.message
+          ? lastUpdate.message.chat.id
+          : lastUpdate.my_chat_member
+          ? lastUpdate.my_chat_member.chat.id
+          : null;
+
+        if (!chatId) {
+          showErrMsg('Could not detect Chat ID. Please send a message to your bot on Telegram first, then try again.', waUrl);
+          return;
+        }
+
+        // Send the order message
+        const sendRes  = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+          method : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body   : JSON.stringify({ chat_id: chatId, text: message })
+        });
+        const sendData = await sendRes.json();
+
+        if (sendData.ok) {
           showSuccess();
         } else {
-          // Show exact Telegram error on screen
-          const errBox = document.getElementById('error-msg');
-          errBox.innerHTML = `⚠️ <b>Telegram Error:</b> ${data.description}<br><br>
-            <b>Fix:</b> Open Telegram → search your bot → tap <b>START</b> → then try again.<br><br>
-            Or <a href="https://wa.me/919403936337" target="_blank" style="color:#25d366;font-weight:700;">💬 message on WhatsApp</a>`;
-          errBox.style.display = 'block';
-          btn.disabled = false;
-          btn.textContent = '🎁 Submit My Order';
+          showErrMsg('Send failed: ' + sendData.description, waUrl);
         }
-      } catch (err) {
-        const errBox = document.getElementById('error-msg');
-        errBox.innerHTML = `⚠️ <b>Network Error.</b> Check your internet connection and try again.<br><br>
-          Or <a href="https://wa.me/919403936337" target="_blank" style="color:#25d366;font-weight:700;">💬 message on WhatsApp</a>`;
-        errBox.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = '🎁 Submit My Order';
-      }
-    }
 
-    // Test Telegram connection (call from browser console: testTelegram())
-    async function testTelegram() {
-      const TELEGRAM_TOKEN   = "8759471549:AAEyVyvbsOEzAnO-L4lek36r-BL_XElfjwU";
-      const TELEGRAM_CHAT_ID = "7089348292";
-      const res  = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: '✅ Test from Snehal Creations website!' })
-      });
-      const data = await res.json();
-      console.log('Telegram test result:', data);
-      alert(data.ok ? '✅ Telegram is working!' : '❌ Error: ' + data.description);
+      } catch (err) {
+        showErrMsg('Network error. Check your internet and try again.', waUrl);
+      }
     }
 
     function showSuccess() {
@@ -887,9 +866,18 @@ _via Snehal Creations Website_`;
       document.getElementById('success-msg').style.display = 'block';
     }
 
+    function showErrMsg(msg, waUrl) {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled    = false;
+      btn.textContent = '🎁 Submit My Order';
+      const errBox = document.getElementById('error-msg');
+      errBox.innerHTML = `⚠️ ${msg}<br><br>Or <a href="${waUrl}" target="_blank" style="color:#25d366;font-weight:700;">💬 send on WhatsApp</a>`;
+      errBox.style.display = 'block';
+    }
+
     function showError() {
       const btn = document.getElementById('submitBtn');
-      btn.disabled = false;
+      btn.disabled    = false;
       btn.textContent = '🎁 Submit My Order';
       document.getElementById('error-msg').style.display = 'block';
     }
