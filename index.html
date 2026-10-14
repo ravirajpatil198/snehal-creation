@@ -771,17 +771,25 @@
       item.classList.toggle('open');
     }
 
-    // --- Order Handler: Formspree (email to Snehal, no WhatsApp redirect) ---
+    // --- Order Handler: Telegram Bot (automatic notification) ---
     async function submitOrder(e) {
       e.preventDefault();
 
-      // ── SETUP (one-time) ────────────────────────────────────────
-      // 1. Go to https://formspree.io → Sign up FREE
-      // 2. Click "New Form" → name it "Snehal Orders"
-      // 3. Copy the form ID (looks like xpwzabcd) and paste below
-      const FORMSPREE_ID = "https://formspree.io/f/xrpeywpa"; // ← PASTE YOUR ID HERE
-      const myWhatsAppNumber = "917219627014";   // ← your WhatsApp (fallback only)
-      // ────────────────────────────────────────────────────────────
+      // ══════════════════════════════════════════════════════════
+      // SETUP — Do this ONCE (5 minutes):
+      //
+      // STEP 1: Open Telegram → search @BotFather → send /newbot
+      //         Give your bot a name e.g. "SnehalOrdersBot"
+      //         Copy the TOKEN it gives you → paste below
+      //
+      // STEP 2: Open Telegram → search @userinfobot → press Start
+      //         Copy your Chat ID number → paste below
+      //
+
+      const TELEGRAM_TOKEN   = "YOUR_BOT_TOKEN8759471549:AAEyVyvbsOEzAnO-L4lek36r-BL_XElfjwU";   // e.g. "7123456789:AAHxxx..."
+      const TELEGRAM_CHAT_ID = "7089348292";     // e.g. "987654321"
+      //
+      // ══════════════════════════════════════════════════════════
 
       const name     = document.getElementById('name').value.trim();
       const phone    = document.getElementById('phone').value.trim();
@@ -791,52 +799,61 @@
       const details  = document.getElementById('details').value.trim();
       const delivery = document.getElementById('delivery').value || 'Flexible';
 
-      // Build WhatsApp fallback link (shown ONLY in success/error message as optional)
-      const waMsg = encodeURIComponent(
-`🌸 NEW ORDER - ${name}
-Product: ${product} | Occasion: ${occasion}
-Phone: ${phone} | Need by: ${delivery}
-Details: ${details}`
-      );
-      const waUrl = `https://wa.me/${myWhatsAppNumber}?text=${waMsg}`;
+      // Build WhatsApp fallback link
+      const waMsg = encodeURIComponent(`🌸 NEW ORDER - ${name}\nProduct: ${product}\nPhone: ${phone}\nDetails: ${details}`);
+      const waUrl = `https://wa.me/919403936337?text=${waMsg}`;
       document.getElementById('waFallback').href = waUrl;
-      document.getElementById('waError').href = waUrl;
+      document.getElementById('waError').href    = waUrl;
 
-      // Disable button & show loading
+      // Disable button
       const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
+      btn.disabled    = true;
       btn.textContent = '⏳ Sending your order...';
 
-      // Check Formspree ID is set
-      if (FORMSPREE_ID === "https://formspree.io/f/xrpeywpa") {
-        // ID not set yet — show setup instructions in console, still show success
-        console.warn("⚠️ Formspree ID not set. Go to formspree.io, create a free form, and paste the ID in the code.");
-        showSuccess();
+      // Build Telegram message
+      const message =
+`🌸 *NEW ORDER — Snehal Creations* 🌸
+━━━━━━━━━━━━━━━━━━━━━
+👤 *Name:*     ${name}
+📞 *Phone:*    ${phone}
+✉️ *Email:*    ${email}
+🎨 *Product:*  ${product}
+🎉 *Occasion:* ${occasion}
+📅 *Need By:*  ${delivery}
+━━━━━━━━━━━━━━━━━━━━━
+📝 *Details:*
+${details}
+━━━━━━━━━━━━━━━━━━━━━
+_via Snehal Creations Website_`;
+
+      // Check tokens are set
+      if (TELEGRAM_TOKEN === "YOUR_BOT_TOKEN" || TELEGRAM_CHAT_ID === "YOUR_CHAT_ID") {
+        console.warn("⚠️ Telegram token/chat ID not set yet. Follow the setup steps in the code.");
+        showSuccess(); // still show success to customer
         return;
       }
 
       try {
-        // Send order directly to Formspree → you get an email notification
-        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        // Send directly to Telegram Bot API — fully automatic, no clicking needed
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            "Customer Name"   : name,
-            "Phone/WhatsApp"  : phone,
-            "Email"           : email,
-            "Product Category": product,
-            "Occasion"        : occasion,
-            "Order Details"   : details,
-            "Delivery Date"   : delivery
+            chat_id    : TELEGRAM_CHAT_ID,
+            text       : message,
+            parse_mode : 'Markdown'
           })
         });
 
-        if (res.ok) {
+        const data = await res.json();
+        if (data.ok) {
           showSuccess();
         } else {
+          console.error('Telegram error:', data);
           showError();
         }
       } catch (err) {
+        console.error('Network error:', err);
         showError();
       }
     }
