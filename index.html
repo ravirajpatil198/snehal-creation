@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snehal Creations | Handmade Art & Gifts</title>
+  <meta name="description" content="Embroidery Art, Resin Art, Painting, Canvas Art, Hand-Painted Bags & Customised Handmade Gifts from Pune. Order now!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      background: #fff9f5;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 40px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #b5487a;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: #555; font-size: 0.9rem; font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: #b5487a; }
+    .nav-cta {
+      background: #b5487a; color: #fff !important;
+      padding: 8px 20px; border-radius: 50px;
+      transition: background .2s !important;
+    }
+    .nav-cta:hover { background: #8f3060 !important; }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 20px 80px;
+      background: linear-gradient(135deg, #fff0f7 0%, #fdebd0 50%, #f8d7e8 100%);
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b5487a' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #fce4f3; color: #b5487a;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 1px;
+      padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 18px; text-transform: uppercase;
+    }
+    #hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      color: #3a1a2e;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    #hero h1 span { color: #b5487a; }
+    #hero p {
+      font-size: 1.05rem; color: #6b4055; max-width: 560px;
+      margin: 0 auto 32px; line-height: 1.7;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: #b5487a; color: #fff; border: none;
+      padding: 14px 32px; border-radius: 50px; font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: background .2s, transform .15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #8f3060; transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent; color: #b5487a;
+      border: 2px solid #b5487a;
+      padding: 12px 30px; border-radius: 50px; font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: all .2s; display: inline-block;
+    }
+    .btn-secondary:hover { background: #b5487a; color: #fff; transform: translateY(-2px); }
+    .hero-stats {
+      display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+      margin-top: 50px;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700; color: #b5487a;
+    }
+    .hero-stat .label { font-size: 0.8rem; color: #6b4055; font-weight: 500; }
+
+    /* ===== SECTION SHARED ===== */
+    section { padding: 80px 20px; }
+    .section-header { text-align: center; margin-bottom: 50px; }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: #3a1a2e; margin-bottom: 12px;
+    }
+    .section-header p { color: #7a5568; font-size: 1rem; max-width: 520px; margin: 0 auto; }
+    .divider {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, #b5487a, #f0a0c0);
+      border-radius: 2px; margin: 14px auto 0;
+    }
+
+    /* ===== SERVICES ===== */
+    #services { background: #fff; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px; max-width: 1000px; margin: 0 auto;
+    }
+    .service-card {
+      background: #fff9f5; border-radius: 16px;
+      padding: 32px 20px; text-align: center;
+      border: 1px solid #f5d5e8;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(181,72,122,0.12); }
+    .service-card .icon { font-size: 2.6rem; margin-bottom: 14px; }
+    .service-card h3 { font-size: 1rem; font-weight: 600; color: #3a1a2e; margin-bottom: 8px; }
+    .service-card p { font-size: 0.85rem; color: #7a5568; line-height: 1.6; }
+
+    /* ===== ABOUT ===== */
+    #about {
+      background: linear-gradient(135deg, #fce4f3 0%, #fdebd0 100%);
+    }
+    .about-inner {
+      max-width: 800px; margin: 0 auto; text-align: center;
+    }
+    .about-inner p {
+      font-size: 1.05rem; color: #5a3048; line-height: 1.8;
+      margin-bottom: 18px;
+    }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 24px; }
+    .tag {
+      background: #fff; color: #b5487a; border: 1.5px solid #f0a0c0;
+      padding: 6px 16px; border-radius: 50px; font-size: 0.82rem; font-weight: 500;
+    }
+
+    /* ===== INSTAGRAM ===== */
+    #instagram { background: #fff; }
+    .insta-box {
+      max-width: 600px; margin: 0 auto; text-align: center;
+      background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      border-radius: 24px; padding: 40px 30px;
+      color: #fff;
+    }
+    .insta-box .insta-icon { font-size: 3rem; margin-bottom: 14px; }
+    .insta-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; margin-bottom: 8px;
+    }
+    .insta-box p { font-size: 0.95rem; opacity: .9; margin-bottom: 24px; line-height: 1.6; }
+    .insta-btn {
+      display: inline-block;
+      background: #fff; color: #dc2743;
+      font-weight: 700; font-size: 0.95rem;
+      padding: 12px 30px; border-radius: 50px;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .insta-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .insta-stats {
+      display: flex; justify-content: center; gap: 36px;
+      margin-top: 28px; border-top: 1px solid rgba(255,255,255,0.3);
+      padding-top: 24px;
+    }
+    .insta-stat .n { font-size: 1.5rem; font-weight: 700; }
+    .insta-stat .l { font-size: 0.78rem; opacity: .85; }
+
+    /* ===== ORDER FORM ===== */
+    #order { background: #fff9f5; }
+    .order-wrapper {
+      max-width: 680px; margin: 0 auto;
+      background: #fff; border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 8px 40px rgba(181,72,122,0.1);
+      border: 1px solid #f5d5e8;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 0.85rem;
+      font-weight: 600; color: #5a3048; margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #e8d0dd; border-radius: 10px;
+      font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+      color: #333; background: #fff9f5;
+      outline: none; transition: border-color .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #b5487a; background: #fff; }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-note {
+      font-size: 0.8rem; color: #9a7088; margin-top: 6px;
+    }
+    .submit-btn {
+      width: 100%; padding: 14px;
+      background: #25d366; color: #fff;
+      border: none; border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: background .2s, transform .15s;
+    }
+    .submit-btn:hover { background: #1ebd5b; transform: translateY(-2px); }
+    .whatsapp-alt {
+      text-align: center; margin-top: 18px;
+      font-size: 0.88rem; color: #7a5568;
+    }
+    .whatsapp-alt a { color: #25d366; font-weight: 600; text-decoration: none; }
+    .whatsapp-alt a:hover { text-decoration: underline; }
+
+    /* ===== SUCCESS MESSAGE ===== */
+    #success-msg {
+      display: none; text-align: center;
+      padding: 24px; background: #f0fff4;
+      border: 1.5px solid #68d391; border-radius: 12px;
+      color: #276749; font-weight: 500; margin-top: 16px;
+    }
+
+    /* ===== FAQ ===== */
+    #faq { background: #fff; }
+    .faq-list { max-width: 700px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid #f0d8e5; padding: 20px 0;
+      cursor: pointer;
+    }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; color: #3a1a2e; font-size: 0.95rem;
+    }
+    .faq-q .arrow { transition: transform .25s; color: #b5487a; font-size: 1.1rem; }
+    .faq-a {
+      font-size: 0.88rem; color: #6b4055; line-height: 1.7;
+      max-height: 0; overflow: hidden; transition: max-height .3s ease;
+      padding-top: 0;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding-top: 10px; }
+    .faq-item.open .arrow { transform: rotate(180deg); }
+
+    /* ===== CONTACT ===== */
+    #contact { background: linear-gradient(135deg, #fce4f3, #fdebd0); }
+    .contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px; max-width: 800px; margin: 0 auto;
+    }
+    .contact-card {
+      background: #fff; border-radius: 16px; padding: 28px 20px;
+      text-align: center; border: 1px solid #f5d5e8;
+    }
+    .contact-card .icon { font-size: 2rem; margin-bottom: 10px; }
+    .contact-card h4 { font-size: 0.95rem; font-weight: 600; color: #3a1a2e; margin-bottom: 6px; }
+    .contact-card a, .contact-card p {
+      font-size: 0.85rem; color: #7a5568; text-decoration: none; word-break: break-word;
+    }
+    .contact-card a:hover { color: #b5487a; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #3a1a2e; color: #d4a0be;
+      text-align: center; padding: 36px 20px;
+    }
+    footer .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; color: #fff; margin-bottom: 14px;
+    }
+    footer .footer-links {
+      display: flex; gap: 20px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 16px; list-style: none;
+    }
+    footer .footer-links a {
+      color: #d4a0be; text-decoration: none; font-size: 0.85rem;
+      transition: color .2s;
+    }
+    footer .footer-links a:hover { color: #f0a0c0; }
+    footer .copy { font-size: 0.78rem; opacity: .7; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .order-wrapper { padding: 28px 20px; }
+    }
+
+    /* ===== SCROLL ANIMATION ===== */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="#hero" class="nav-logo">✿ Snehal Creations</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#instagram">Instagram</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#order" class="nav-cta">Order Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div>
+      <div class="hero-badge">✨ Handmade with Love from Pune</div>
+      <h1>Where Art Meets<br/><span>Heartfelt Craft</span></h1>
+      <p>Embroidery, Resin, Painting, Canvas Art & Custom Handmade Gifts — each piece uniquely crafted just for you.</p>
+      <div class="hero-btns">
+        <a href="#order" class="btn-primary">🎁 Place an Order</a>
+        <a href="#services" class="btn-secondary">Explore My Art</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">41+</div><div class="label">Art Posts</div></div>
+        <div class="hero-stat"><div class="num">230+</div><div class="label">Followers</div></div>
+        <div class="hero-stat"><div class="num">100%</div><div class="label">Handmade</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="services">
+    <div class="section-header fade-up">
+      <h2>What I Create</h2>
+      <div class="divider"></div>
+      <p>Every piece is crafted by hand with attention to detail and a whole lot of love.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up">
+        <div class="icon">🧵</div>
+        <h3>Embroidery Art</h3>
+        <p>Beautiful hand-stitched embroidery pieces — from portraits to decorative frames.</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="icon">💎</div>
+        <h3>Resin Art</h3>
+        <p>Stunning resin creations — coasters, trays, keychains, jewellery & more.</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="icon">🎨</div>
+        <h3>Painting & Canvas</h3>
+        <p>Acrylic, watercolour & mixed-media paintings on canvas for your home or office.</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="icon">👜</div>
+        <h3>Hand-Painted Bags</h3>
+        <p>Unique hand-painted tote bags & handbags — wearable art you'll love.</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="icon">🎁</div>
+        <h3>Customised Gifts</h3>
+        <p>Personalised handmade gifts for birthdays, weddings, anniversaries & more.</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="icon">💌</div>
+        <h3>DM for Custom Orders</h3>
+        <p>Got something specific in mind? Reach out and we'll bring your vision to life.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <div class="section-header fade-up">
+      <h2>About Snehal Creations</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="about-inner fade-up">
+      <p>
+        Hi! I'm <strong>Snehal</strong>, an artist based in <strong>Pune</strong> with a deep love for handmade crafts. 
+        Through <em>Snehal Creations</em>, I pour my heart into every piece — be it intricate embroidery, 
+        sparkling resin art, expressive paintings, or one-of-a-kind gifts.
+      </p>
+      <p>
+        My goal is simple: to turn everyday moments into art. Whether you're looking for a unique home décor piece, 
+        a heartfelt gift for a loved one, or something completely custom — I'm here to make it for you.
+      </p>
+      <div class="about-tags">
+        <span class="tag">🧵 Embroidery</span>
+        <span class="tag">💎 Resin Art</span>
+        <span class="tag">🎨 Paintings</span>
+        <span class="tag">👜 Hand-Painted Bags</span>
+        <span class="tag">🎁 Custom Gifts</span>
+        <span class="tag">📍 Pune</span>
+        <span class="tag">✨ 100% Handmade</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INSTAGRAM ===== -->
+  <section id="instagram">
+    <div class="section-header fade-up">
+      <h2>Follow My Art Journey</h2>
+      <div class="divider"></div>
+      <p>See the latest creations, behind-the-scenes & more on Instagram.</p>
+    </div>
+    <div class="insta-box fade-up">
+      <div class="insta-icon">📸</div>
+      <h3>@snehal_handmade_art</h3>
+      <p>Follow along for daily art updates, custom order previews, packing videos, and creative inspiration straight from my studio in Pune.</p>
+      <a href="https://www.instagram.com/snehal_creations_1/"
+         target="_blank" rel="noopener noreferrer" class="insta-btn">
+        📷 Follow on Instagram
+      </a>
+      <div class="insta-stats">
+        <div class="insta-stat"><div class="n">41</div><div class="l">Posts</div></div>
+        <div class="insta-stat"><div class="n">230</div><div class="l">Followers</div></div>
+        <div class="insta-stat"><div class="n">201</div><div class="l">Following</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ORDER FORM ===== -->
+  <section id="order">
+    <div class="section-header fade-up">
+      <h2>Place an Order</h2>
+      <div class="divider"></div>
+      <p>Fill in the details below and clicking submit will directly send your order details to WhatsApp.</p>
+    </div>
+    <div class="order-wrapper fade-up">
+      <form id="orderForm" onsubmit="submitOrder(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone / WhatsApp *</label>
+            <input type="tel" id="phone" placeholder="+91 XXXXXXXXXX" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label for="product">Product Category *</label>
+          <select id="product" required>
+            <option value="" disabled selected>Select a product type</option>
+            <option value="Embroidery Art">🧵 Embroidery Art</option>
+            <option value="Resin Art">💎 Resin Art (Coasters, Trays, Jewellery…)</option>
+            <option value="Painting / Canvas Art">🎨 Painting / Canvas Art</option>
+            <option value="Hand-Painted Bag">👜 Hand-Painted Bag</option>
+            <option value="Customised Gift">🎁 Customised Gift</option>
+            <option value="Something Else">💌 Something Else (describe below)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="occasion">Occasion</label>
+          <select id="occasion">
+            <option value="">Select occasion (optional)</option>
+            <option value="Birthday">Birthday</option>
+            <option value="Wedding / Anniversary">Wedding / Anniversary</option>
+            <option value="Housewarming">Housewarming</option>
+            <option value="Diwali / Festive">Diwali / Festive</option>
+            <option value="Valentine's Day">Valentine's Day</option>
+            <option value="Just Because">Just Because 💕</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="details">Order Details *</label>
+          <textarea id="details" placeholder="Describe what you'd like — size, colours, text, reference ideas, etc." required></textarea>
+          <div class="form-note">Tip: The more details you share, the faster we can confirm your custom order!</div>
+        </div>
+        <div class="form-group">
+          <label for="delivery">Expected Delivery Date</label>
+          <input type="date" id="delivery" />
+        </div>
+        <button type="submit" class="submit-btn">💬 Send Order on WhatsApp</button>
+      </form>
+      <div id="success-msg">
+        🎉 Thank you! Redirecting to WhatsApp to send your order... ✨
+      </div>
+      <p class="whatsapp-alt">
+        Prefer to chat directly? 
+        <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Snehal!%20I%20want%20to%20place%20a%20custom%20order." target="_blank">💬 Message on WhatsApp</a>
+        or DM on 
+        <a href="https://instagram.com/snehal_creations_1" target="_blank">📷 Instagram</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="section-header fade-up">
+      <h2>Frequently Asked Questions</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="faq-list fade-up">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How long does a custom order take? <span class="arrow">▼</span></div>
+        <div class="faq-a">Delivery time varies by product. Typically 5–15 business days depending on complexity. Wedding/bulk orders may need more time — please reach out early!</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do you ship outside Pune? <span class="arrow">▼</span></div>
+        <div class="faq-a">Yes! I ship all across India. Shipping charges will be shared at the time of order confirmation.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I see a preview before the final piece? <span class="arrow">▼</span></div>
+        <div class="faq-a">Absolutely! For most custom orders, I share a work-in-progress photo for your approval before completing the piece.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What payment methods do you accept? <span class="arrow">▼</span></div>
+        <div class="faq-a">I accept UPI (GPay, PhonePe, Paytm), bank transfer, and cash on delivery for local Pune orders. 50% advance is required for custom orders.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I order a gift with a personalised message? <span class="arrow">▼</span></div>
+        <div class="faq-a">Yes! Just mention it in your order details. I'll include a handwritten note and can also do gift wrapping on request. 🎁</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <div class="section-header fade-up">
+      <h2>Get in Touch</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="contact-grid fade-up">
+      <div class="contact-card">
+        <div class="icon">📍</div>
+        <h4>Location</h4>
+        <p>Pune, Maharashtra, India</p>
+      </div>
+      <div class="contact-card">
+        <div class="icon">📷</div>
+        <h4>Instagram</h4>
+        <a href="https://instagram.com/snehal_creations_1" target="_blank" rel="noopener">@snehal_handmade_art</a>
+      </div>
+      <div class="contact-card">
+        <div class="icon">💬</div>
+        <h4>WhatsApp</h4>
+        <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Snehal!" target="_blank">DM for Orders</a>
+      </div>
+      <div class="contact-card">
+        <div class="icon">⏰</div>
+        <h4>Response Time</h4>
+        <p>Within 24 hours</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="logo">✿ Snehal Creations</div>
+    <ul class="footer-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#instagram">Instagram</a></li>
+      <li><a href="#order">Order</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="copy">© 2026 Snehal Creations · Handmade with ♥ in Pune</p>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // --- Fade-up on scroll ---
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // --- FAQ accordion ---
+    function toggleFaq(item) {
+      item.classList.toggle('open');
+    }
+
+    // --- WhatsApp Order Handler ---
+    function submitOrder(e) {
+      e.preventDefault();
+
+      // REPLACE WITH YOUR ACTUAL WHATSAPP NUMBER (with country code, no +, no spaces)
+      const myWhatsAppNumber = "919403936337"; 
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim() || 'Not provided';
+      const product = document.getElementById('product').value;
+      const occasion = document.getElementById('occasion').value || 'None specified';
+      const details = document.getElementById('details').value.trim();
+      const delivery = document.getElementById('delivery').value || 'Flexible / As soon as possible';
+
+      // Format WhatsApp notification text
+      const orderMessage = 
+`🌸 *NEW CUSTOM ORDER REQUEST* 🌸
+----------------------------------
+👤 *Customer Name:* ${name}
+📞 *Contact No:* ${phone}
+✉️ *Email:* ${email}
+🎨 *Category:* ${product}
+🎉 *Occasion:* ${occasion}
+📅 *Need By:* ${delivery}
+----------------------------------
+📝 *Order Details & Notes:*
+${details}
+----------------------------------
+_Submitted via Snehal Creations Website_`;
+
+      const encodedMsg = encodeURIComponent(orderMessage);
+      const whatsappUrl = `https://wa.me/${myWhatsAppNumber}?text=${encodedMsg}`;
+
+      // Show user feedback
+      const form = document.getElementById('orderForm');
+      const msg = document.getElementById('success-msg');
+      form.style.display = 'none';
+      msg.style.display = 'block';
+
+      // Redirect directly to WhatsApp
+      window.open(whatsappUrl, '_blank');
+    }
+  </script>
+
+</body>
+</html>
