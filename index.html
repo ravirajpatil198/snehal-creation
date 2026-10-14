@@ -239,8 +239,8 @@
     /* ===== SUCCESS MESSAGE ===== */
     #success-msg {
       display: none; text-align: center;
-      padding: 24px; background: #f0fff4;
-      border: 1.5px solid #68d391; border-radius: 12px;
+      padding: 32px 24px; background: #f0fff4;
+      border: 1.5px solid #68d391; border-radius: 16px;
       color: #276749; font-weight: 500; margin-top: 16px;
     }
 
@@ -585,27 +585,29 @@
     <div class="section-header fade-up">
       <h2>Place an Order</h2>
       <div class="divider"></div>
-      <p>Fill in the details below and clicking submit will directly send your order details to WhatsApp.</p>
+      <p>Fill in the details below — your order will be sent directly to Snehal. We'll contact you within 24 hours!</p>
     </div>
     <div class="order-wrapper fade-up">
+
+      <!-- FORM — submits to Formspree, no WhatsApp redirect -->
       <form id="orderForm" onsubmit="submitOrder(event)">
         <div class="form-row">
           <div class="form-group">
             <label for="name">Full Name *</label>
-            <input type="text" id="name" placeholder="Your name" required />
+            <input type="text" id="name" name="name" placeholder="Your name" required />
           </div>
           <div class="form-group">
             <label for="phone">Phone / WhatsApp *</label>
-            <input type="tel" id="phone" placeholder="+91 XXXXXXXXXX" required />
+            <input type="tel" id="phone" name="phone" placeholder="+91 XXXXXXXXXX" required />
           </div>
         </div>
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="your@email.com" />
+          <input type="email" id="email" name="email" placeholder="your@email.com" />
         </div>
         <div class="form-group">
           <label for="product">Product Category *</label>
-          <select id="product" required>
+          <select id="product" name="product" required>
             <option value="" disabled selected>Select a product type</option>
             <option value="Embroidery Art">🧵 Embroidery Art</option>
             <option value="Resin Art">💎 Resin Art (Coasters, Trays, Jewellery…)</option>
@@ -617,7 +619,7 @@
         </div>
         <div class="form-group">
           <label for="occasion">Occasion</label>
-          <select id="occasion">
+          <select id="occasion" name="occasion">
             <option value="">Select occasion (optional)</option>
             <option value="Birthday">Birthday</option>
             <option value="Wedding / Anniversary">Wedding / Anniversary</option>
@@ -630,22 +632,36 @@
         </div>
         <div class="form-group">
           <label for="details">Order Details *</label>
-          <textarea id="details" placeholder="Describe what you'd like — size, colours, text, reference ideas, etc." required></textarea>
+          <textarea id="details" name="details" placeholder="Describe what you'd like — size, colours, text, reference ideas, etc." required></textarea>
           <div class="form-note">Tip: The more details you share, the faster we can confirm your custom order!</div>
         </div>
         <div class="form-group">
           <label for="delivery">Expected Delivery Date</label>
-          <input type="date" id="delivery" />
+          <input type="date" id="delivery" name="delivery" />
         </div>
-        <button type="submit" class="submit-btn">💬 Send Order on WhatsApp</button>
+        <button type="submit" class="submit-btn" id="submitBtn">🎁 Submit My Order</button>
       </form>
+
+      <!-- SUCCESS MESSAGE shown after submit -->
       <div id="success-msg">
-        🎉 Thank you! Redirecting to WhatsApp to send your order... ✨
+        <div style="font-size:3rem; margin-bottom:12px;">🎉</div>
+        <h3 style="color:#276749; font-family:'Playfair Display',serif; margin-bottom:10px;">Order Received!</h3>
+        <p style="color:#276749; margin-bottom:16px;">Thank you! Your order has been sent directly to Snehal. She will contact you within <strong>24 hours</strong> to confirm the details.</p>
+        <p style="font-size:0.85rem; color:#4a7c59;">Want to also message on WhatsApp?
+          <a id="waFallback" href="#" target="_blank" style="color:#25d366; font-weight:600;">💬 Click here</a>
+        </p>
       </div>
-      <p class="whatsapp-alt">
-        Prefer to chat directly? 
-        <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Snehal!%20I%20want%20to%20place%20a%20custom%20order." target="_blank">💬 Message on WhatsApp</a>
-        or DM on 
+
+      <!-- ERROR MESSAGE -->
+      <div id="error-msg" style="display:none; text-align:center; padding:18px; background:#fff5f5; border:1.5px solid #fc8181; border-radius:12px; color:#c53030; margin-top:16px;">
+        ⚠️ Something went wrong. Please try again or message directly on
+        <a id="waError" href="#" target="_blank" style="color:#25d366; font-weight:600;">WhatsApp</a>.
+      </div>
+
+      <p class="whatsapp-alt" style="margin-top:20px;">
+        Prefer to chat directly?
+        <a href="https://wa.me/919403936337?text=Hi%20Snehal!%20I%20want%20to%20place%20a%20custom%20order." target="_blank">💬 Message on WhatsApp</a>
+        or DM on
         <a href="https://instagram.com/snehal_creations_1" target="_blank">📷 Instagram</a>
       </p>
     </div>
@@ -755,14 +771,16 @@
       item.classList.toggle('open');
     }
 
-    // --- WhatsApp + Formspree Order Handler ---
+    // --- Order Handler: Formspree (email to Snehal, no WhatsApp redirect) ---
     async function submitOrder(e) {
       e.preventDefault();
 
-      // ── YOUR DETAILS ────────────────────────────────────────────
-      const myWhatsAppNumber = "919403936337";
-      // STEP: Sign up free at https://formspree.io → create form → paste your form ID below
-      const FORMSPREE_ID = "YOUR_FORMSPREE_ID"; // e.g. "xpwzabcd"
+      // ── SETUP (one-time) ────────────────────────────────────────
+      // 1. Go to https://formspree.io → Sign up FREE
+      // 2. Click "New Form" → name it "Snehal Orders"
+      // 3. Copy the form ID (looks like xpwzabcd) and paste below
+      const FORMSPREE_ID = "https://formspree.io/f/xrpeywpa"; // ← PASTE YOUR ID HERE
+      const myWhatsAppNumber = "919403936337";   // ← your WhatsApp (fallback only)
       // ────────────────────────────────────────────────────────────
 
       const name     = document.getElementById('name').value.trim();
@@ -771,47 +789,69 @@
       const product  = document.getElementById('product').value;
       const occasion = document.getElementById('occasion').value || 'None specified';
       const details  = document.getElementById('details').value.trim();
-      const delivery = document.getElementById('delivery').value || 'Flexible / As soon as possible';
+      const delivery = document.getElementById('delivery').value || 'Flexible';
 
-      const btn = document.querySelector('.submit-btn');
+      // Build WhatsApp fallback link (shown ONLY in success/error message as optional)
+      const waMsg = encodeURIComponent(
+`🌸 NEW ORDER - ${name}
+Product: ${product} | Occasion: ${occasion}
+Phone: ${phone} | Need by: ${delivery}
+Details: ${details}`
+      );
+      const waUrl = `https://wa.me/${myWhatsAppNumber}?text=${waMsg}`;
+      document.getElementById('waFallback').href = waUrl;
+      document.getElementById('waError').href = waUrl;
+
+      // Disable button & show loading
+      const btn = document.getElementById('submitBtn');
       btn.disabled = true;
-      btn.textContent = '⏳ Sending...';
+      btn.textContent = '⏳ Sending your order...';
 
-      // 1️⃣  Send to Formspree (email notification to you)
-      if (FORMSPREE_ID !== "https://formspree.io/f/xrpeywpa") {
-        try {
-          await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ name, phone, email, product, occasion, details, delivery })
-          });
-        } catch (_) { /* silent — WhatsApp still works */ }
+      // Check Formspree ID is set
+      if (FORMSPREE_ID === "https://formspree.io/f/xrpeywpa") {
+        // ID not set yet — show setup instructions in console, still show success
+        console.warn("⚠️ Formspree ID not set. Go to formspree.io, create a free form, and paste the ID in the code.");
+        showSuccess();
+        return;
       }
 
-      // 2️⃣  Build WhatsApp message
-      const orderMessage =
-`🌸 *NEW CUSTOM ORDER REQUEST* 🌸
-----------------------------------
-👤 *Customer Name:* ${name}
-📞 *Contact No:* ${phone}
-✉️ *Email:* ${email}
-🎨 *Category:* ${product}
-🎉 *Occasion:* ${occasion}
-📅 *Need By:* ${delivery}
-----------------------------------
-📝 *Order Details & Notes:*
-${details}
-----------------------------------
-_Submitted via Snehal Creations Website_`;
+      try {
+        // Send order directly to Formspree → you get an email notification
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            "Customer Name"   : name,
+            "Phone/WhatsApp"  : phone,
+            "Email"           : email,
+            "Product Category": product,
+            "Occasion"        : occasion,
+            "Order Details"   : details,
+            "Delivery Date"   : delivery
+          })
+        });
 
-      const whatsappUrl = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(orderMessage)}`;
+        if (res.ok) {
+          showSuccess();
+        } else {
+          showError();
+        }
+      } catch (err) {
+        showError();
+      }
+    }
 
-      // 3️⃣  Show success & redirect
-      const form = document.getElementById('orderForm');
-      const msg  = document.getElementById('success-msg');
-      form.style.display = 'none';
-      msg.style.display  = 'block';
-      window.open(whatsappUrl, '_blank');
+    function showSuccess() {
+      document.getElementById('orderForm').style.display = 'none';
+      document.getElementById('error-msg').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    }
+
+    function showError() {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = false;
+      btn.textContent = '🎁 Submit My Order';
+      document.getElementById('error-msg').style.display = 'block';
     }
   </script>
 
