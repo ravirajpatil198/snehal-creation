@@ -828,13 +828,12 @@ _via Snehal Creations Website_`;
 
       // Check tokens are set
       if (TELEGRAM_TOKEN === "YOUR_BOT_TOKEN" || TELEGRAM_CHAT_ID === "YOUR_CHAT_ID") {
-        console.warn("⚠️ Telegram token/chat ID not set yet. Follow the setup steps in the code.");
-        showSuccess(); // still show success to customer
+        showSuccess();
         return;
       }
 
       try {
-        // Send directly to Telegram Bot API — fully automatic, no clicking needed
+        // Send directly to Telegram Bot API
         const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -849,21 +848,37 @@ _via Snehal Creations Website_`;
         if (data.ok) {
           showSuccess();
         } else {
-          console.error('Telegram error:', data);
-          // Show exact error to help debug
-          document.getElementById('error-msg').innerHTML =
-            `⚠️ Telegram Error: <b>${data.description}</b><br>
-             Please check your Bot Token and Chat ID.<br>
-             Or message directly on <a id="waError2" href="https://wa.me/919403936337" target="_blank" style="color:#25d366;font-weight:600;">WhatsApp</a>.`;
-          document.getElementById('error-msg').style.display = 'block';
-          const btn = document.getElementById('submitBtn');
+          // Show exact Telegram error on screen
+          const errBox = document.getElementById('error-msg');
+          errBox.innerHTML = `⚠️ <b>Telegram Error:</b> ${data.description}<br><br>
+            <b>Fix:</b> Open Telegram → search your bot → tap <b>START</b> → then try again.<br><br>
+            Or <a href="https://wa.me/919403936337" target="_blank" style="color:#25d366;font-weight:700;">💬 message on WhatsApp</a>`;
+          errBox.style.display = 'block';
           btn.disabled = false;
           btn.textContent = '🎁 Submit My Order';
         }
       } catch (err) {
-        console.error('Network error:', err);
-        showError();
+        const errBox = document.getElementById('error-msg');
+        errBox.innerHTML = `⚠️ <b>Network Error.</b> Check your internet connection and try again.<br><br>
+          Or <a href="https://wa.me/919403936337" target="_blank" style="color:#25d366;font-weight:700;">💬 message on WhatsApp</a>`;
+        errBox.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = '🎁 Submit My Order';
       }
+    }
+
+    // Test Telegram connection (call from browser console: testTelegram())
+    async function testTelegram() {
+      const TELEGRAM_TOKEN   = "8759471549:AAEyVyvbsOEzAnO-L4lek36r-BL_XElfjwU";
+      const TELEGRAM_CHAT_ID = "7089348292";
+      const res  = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: '✅ Test from Snehal Creations website!' })
+      });
+      const data = await res.json();
+      console.log('Telegram test result:', data);
+      alert(data.ok ? '✅ Telegram is working!' : '❌ Error: ' + data.description);
     }
 
     function showSuccess() {
